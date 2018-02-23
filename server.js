@@ -20,9 +20,15 @@ app.use(logger());
 
 router.use('/menu', menuRouter.routes());
 
-app.use(router.routes());// 将路由规则挂载到Koa上。
+
+const loginRouter = require('./server/routers/userRouter');
+router.use('/api', loginRouter.routes(), loginRouter.allowedMethods());
+
+
+app.use(router.routes().use(router.allowedMethods()));// 将路由规则挂载到Koa上。
 app.use(historyApiFallback());
 app.use(serve(path.resolve('dist')));
+
 
 app.listen(3000, () => {
   console.log('ump rest server start at port(s): 3000')
